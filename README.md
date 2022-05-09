@@ -36,9 +36,9 @@ The `.env` file is used by flask to set environment variables when running `flas
 
 The following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate
 
-TRELLO_API_KEY=yourtrello_apikey
-TRELLO_API_TOKEN=yourtrello_apitoken
-TRELLO_BOARD_ID=yourtrello_boardid
+TRELLO_API_KEY=your_trello_api_key
+TRELLO_API_TOKEN=your_trello_api_token
+TRELLO_BOARD_ID=your_trello_board_id
 
 ## Running the App
 
