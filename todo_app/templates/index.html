@@ -21,8 +21,12 @@
     </div>
   </div>
   <form action="/additem" method="POST">
-    <label for="nitem">New ToDo entry:</label><br>
-    <input type="text" id="nitem" name="nitem" value="Enter ToDo"><br><br>
+    <div class="mb-2">
+        <label for="new_item">New ToDo entry:</label>
+    </div>
+    <div class="mb-3">
+        <input type="text" id="new_item" name="new_item" placeholder="Enter ToDo">
+    </div>
     <input type="submit" value="Submit">
   </form>
 {% endblock %}

@@ -10,13 +10,12 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     items = get_items()
-    #print(items)
     return render_template('index.html', items=items)
     
 @app.route('/additem', methods=['POST'])
 def addnewtodo():
-    newtodo= request.form.get('nitem')
-    if newtodo != 'Enter ToDo':
+    newtodo= request.form.get('new_item')
+    if newtodo != '':
         add_item(newtodo)
     return redirect('/')
 
