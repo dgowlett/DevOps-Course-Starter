@@ -1,4 +1,6 @@
+from flask import session
 import requests
+import json
 
 _DEFAULT_ITEMS = [
     { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
@@ -26,10 +28,23 @@ def get_items(BOARD_ID,APIKey,APIToken):
     response = requests.request("GET",url,params=query)
 
     jsonResponse = response.json()
+    items=[]
+    #get lists To-do, doing, done
+
     print(jsonResponse)
     for dataline in jsonResponse:
-        for key, value in dataline.items():
-            if key == 'name':
-                print(key, ":", value)
-    #return session.get('name', _DEFAULT_ITEMS.copy())
-    return next((item for item in jsonResponse), None)
+        print(dataline['id'])
+        print(dataline['name'])
+        print(dataline['shortLink'])
+        getitem = {'id': dataline['id'], 'title': dataline['name'], 'status': dataline['shortLink']}
+        items.append(getitem)
+        #for key, value in dataline.items():
+        #    if key == 'name':
+        #        print(key, ":", value)
+        #    elif key == 'id':
+        #        print(key, ":", value)
+
+    print(items)
+    #return session.get('items', _DEFAULT_ITEMS.copy())
+    return items
+    #return next((item for item in dataline.items() if item['name'] == 'name', None)
