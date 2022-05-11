@@ -1,4 +1,5 @@
-#from flask import session
+# Trello card actions
+#
 import requests
 import json
 
@@ -26,9 +27,7 @@ def get_items(BOARD_ID,APIKey,APIToken):
     }
 
     print(query)
-    #url = "https://api.trello.com/1/boards/" + BOARD_ID + "/cards"
     url = "https://api.trello.com/1/boards/" + BOARD_ID + "/lists"
-    print(url)
     response = requests.request("GET",url,params=query)
 
     jsonResponse = response.json()
@@ -37,22 +36,16 @@ def get_items(BOARD_ID,APIKey,APIToken):
     # add try abort response errors i.e. server code 500
     #
 
-    print(jsonResponse)
+    #print(jsonResponse)
 
     id_number=1
-    for lists in jsonResponse:
-        print(lists['id'])
-        print(lists['name'])
-        #new_list_entry=
+    for lists in jsonResponse: 
         lists_ids.append({'id': lists['id'], 'name': lists['name']})
-
         for card in lists['cards']:
-            print(card['name'])
             if lists['name'] == 'Doing':
                 status="Started"
             else:
                 status="Not Started"
-
             getitem = {'id': id_number, 'title': card['name'], 'status': status}
             items.append(getitem)
             id_number += 1
@@ -101,6 +94,6 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     url = "https://api.trello.com/1/cards"
     print(url)
     response = requests.request("POST",url,headers=headers,params=query)
-    print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
 
     return item
