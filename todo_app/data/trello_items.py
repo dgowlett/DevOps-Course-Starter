@@ -111,7 +111,6 @@ def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
         'token': APIToken
     }
 
-
     for findSelection in items:
         if findSelection['id'] == int(Selected_item):
             shortLink=findSelection['shortLink']

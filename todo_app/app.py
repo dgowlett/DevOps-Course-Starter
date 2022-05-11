@@ -20,6 +20,17 @@ def addnewtodo():
         print (app.config["BOARD_ID"])
     return redirect('/')
 
+# NEW
+@app.route('/completeditem', methods=['POST'])
+def completedtodo():
+    newtodo= request.form.get('completeditem')
+    if newtodo != '':
+        Selected_item = request.form['To Do List']
+        completed_item(Selected_item,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+        print (app.config["BOARD_ID"])
+    return redirect('/')
+# END OF NEW
+
 @app.route('/itemaction', methods=['POST'])
 def actiontodo():
 
