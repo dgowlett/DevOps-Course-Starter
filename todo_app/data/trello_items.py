@@ -9,6 +9,7 @@ _DEFAULT_ITEMS = [
 ]
 
 lists_ids=[]
+items=[]
 
 def get_items(BOARD_ID,APIKey,APIToken):
     """
@@ -20,6 +21,8 @@ def get_items(BOARD_ID,APIKey,APIToken):
     Returns:
         list: The list of cards from a list/board.
     """
+
+    items=[]
     query = {
         'key': APIKey,
         'token': APIToken,
@@ -31,7 +34,7 @@ def get_items(BOARD_ID,APIKey,APIToken):
     response = requests.request("GET",url,params=query)
 
     jsonResponse = response.json()
-    items=[]
+
     
     # add try abort response errors i.e. server code 500
     #
@@ -42,15 +45,17 @@ def get_items(BOARD_ID,APIKey,APIToken):
     for lists in jsonResponse: 
         lists_ids.append({'id': lists['id'], 'name': lists['name']})
         for card in lists['cards']:
-            if lists['name'] == 'Doing':
-                status="Started"
+            if lists['name'] == 'Done':
+                status="Completed"
             else:
                 status="Not Started"
-            getitem = {'id': id_number, 'title': card['name'], 'status': status}
+            getitem = {'id': id_number, 'title': card['name'], 'status': status, 'shortLink': card['shortLink'], 'idList': card['idList']}
             items.append(getitem)
             id_number += 1
 
     return items
+
+
 
 
 def add_item(title,BOARD_ID,APIKey,APIToken):
@@ -58,7 +63,7 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     Adds a new item with the specified title to the session.
 
     Args:
-        title: The title of the item.
+        title: The title of the item,BOARD_ID,APIKey,APIToken.
 
     Returns:
         item: The saved item.
@@ -97,3 +102,72 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
 
     return item
+
+def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
+    """
+    delete card using it's Selected_item, BOARD_ID, APIKey, APIToken.
+
+    Args:
+        The Trello card's Selected_item, BOARD_ID,APIKEY,APIToken.
+
+    Returns:
+        Nothing.
+    """
+
+    items = get_items(BOARD_ID,APIKey,APIToken)
+    query = {   
+        'key': APIKey,
+        'token': APIToken
+    }
+
+    print(query)
+    print("in delete")
+
+    for findSelection in items:
+        if findSelection['id'] == int(Selected_item):
+            shortLink=findSelection['shortLink']
+            print(shortLink)
+            url = "https://api.trello.com/1/cards/" + shortLink
+            print(url)
+            response = requests.request("DELETE",url,params=query)
+    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+
+    return None
+
+
+def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
+    """
+    completed card using it's shortLink and Done lists idList.
+
+    Args:
+        The Trello card's items id, BOARD_ID, APIKEY, APIToken.
+
+    Returns:
+        Nothing.
+    """
+
+    items = get_items(BOARD_ID,APIKey,APIToken)
+    query = {   
+        'key': APIKey,
+        'token': APIToken
+    }
+
+    for ids in lists_ids:
+        print(ids)
+
+
+    print(query)
+    print("in completed")
+
+    #for findSelection in items:
+    #    if findSelection['id'] == int(Selected_item):
+    #        shortLink=findSelection['shortLink']
+    #        print(shortLink)
+    #        url = "https://api.trello.com/1/cards/" + shortLink
+    #        print(url)
+    #        response = requests.request("DELETE",url,params=query)
+    
+    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+    #{{trelloAPIURL}}/1/cards/GnUKI0JW?key={{trellokey}}&token={{trelloToken}}&idList=6271132cb968128630ee52e8
+
+    return None
