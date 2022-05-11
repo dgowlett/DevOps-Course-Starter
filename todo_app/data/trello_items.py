@@ -7,6 +7,8 @@ _DEFAULT_ITEMS = [
     { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
 ]
 
+lists_ids=[]
+
 def get_items(BOARD_ID,APIKey,APIToken):
     """
     Fetches all saved items from trello board_id.
@@ -41,6 +43,9 @@ def get_items(BOARD_ID,APIKey,APIToken):
     for lists in jsonResponse:
         print(lists['id'])
         print(lists['name'])
+        #new_list_entry=
+        lists_ids.append({'id': lists['id'], 'name': lists['name']})
+
         for card in lists['cards']:
             print(card['name'])
             if lists['name'] == 'Doing':
@@ -55,7 +60,7 @@ def get_items(BOARD_ID,APIKey,APIToken):
     return items
 
 
-def add_item(title):
+def add_item(title,BOARD_ID,APIKey,APIToken):
     """
     Adds a new item with the specified title to the session.
 
@@ -65,7 +70,7 @@ def add_item(title):
     Returns:
         item: The saved item.
     """
-    items = get_items(app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+    items = get_items(BOARD_ID,APIKey,APIToken)
 
     # Determine the ID for the item based on that of the previously added item
     id = items[-1]['id'] + 1 if items else 0
@@ -74,6 +79,28 @@ def add_item(title):
 
     # Add the item to the list
     items.append(item)
-    #################session['items'] = items
+
+    for list_id in lists_ids:
+        if list_id['name'] == 'To Do':
+            created_in_list=list_id['id']
+
+    headers = {
+        "Accept": "application/json"
+    }
+
+    query = {
+        'idList': created_in_list,
+        'key': APIKey,
+        'token': APIToken,
+        'name': title
+    }
+
+    print(headers)
+    print(query)
+   
+    url = "https://api.trello.com/1/cards"
+    print(url)
+    response = requests.request("POST",url,headers=headers,params=query)
+    print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
 
     return item
