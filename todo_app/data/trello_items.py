@@ -29,17 +29,12 @@ def get_items(BOARD_ID,APIKey,APIToken):
         'cards': 'open'
     }
 
-    print(query)
     url = "https://api.trello.com/1/boards/" + BOARD_ID + "/lists"
     response = requests.request("GET",url,params=query)
-
     jsonResponse = response.json()
 
-    
     # add try abort response errors i.e. server code 500
     #
-
-    #print(jsonResponse)
 
     id_number=1
     for lists in jsonResponse: 
@@ -81,6 +76,7 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     for list_id in lists_ids:
         if list_id['name'] == 'To Do':
             created_in_list=list_id['id']
+            break
 
     headers = {
         "Accept": "application/json"
@@ -92,14 +88,9 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
         'token': APIToken,
         'name': title
     }
-
-    print(headers)
-    print(query)
    
     url = "https://api.trello.com/1/cards"
-    print(url)
     response = requests.request("POST",url,headers=headers,params=query)
-    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
 
     return item
 
@@ -120,17 +111,13 @@ def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
         'token': APIToken
     }
 
-    print(query)
-    print("in delete")
 
     for findSelection in items:
         if findSelection['id'] == int(Selected_item):
             shortLink=findSelection['shortLink']
-            print(shortLink)
             url = "https://api.trello.com/1/cards/" + shortLink
-            print(url)
             response = requests.request("DELETE",url,params=query)
-    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+            break
 
     return None
 
@@ -147,27 +134,54 @@ def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
     """
 
     items = get_items(BOARD_ID,APIKey,APIToken)
-    query = {   
+
+    for Done_idList in lists_ids:
+        if Done_idList['name'] == 'Done':
+            break
+
+    query = {
+        'idList':  Done_idList['id'],   
         'key': APIKey,
         'token': APIToken
     }
 
-    for ids in lists_ids:
-        print(ids)
+    for findSelection in items:
+        if findSelection['id'] == int(Selected_item):
+            shortLink=findSelection['shortLink']
+            url = "https://api.trello.com/1/cards/" + shortLink
+            response = requests.request("PUT",url,params=query)
+            break
 
+    return None
 
-    print(query)
-    print("in completed")
+def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
+    """
+    switch card to not started status using it's shortLink and Done lists idList.
 
-    #for findSelection in items:
-    #    if findSelection['id'] == int(Selected_item):
-    #        shortLink=findSelection['shortLink']
-    #        print(shortLink)
-    #        url = "https://api.trello.com/1/cards/" + shortLink
-    #        print(url)
-    #        response = requests.request("DELETE",url,params=query)
-    
-    #print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
-    #{{trelloAPIURL}}/1/cards/GnUKI0JW?key={{trellokey}}&token={{trelloToken}}&idList=6271132cb968128630ee52e8
+    Args:
+        The Trello card's items id, BOARD_ID, APIKEY, APIToken.
+
+    Returns:
+        Nothing.
+    """
+
+    items = get_items(BOARD_ID,APIKey,APIToken)
+
+    for Done_idList in lists_ids:
+        if Done_idList['name'] == 'To Do':
+            break
+
+    query = {
+        'idList':  Done_idList['id'],   
+        'key': APIKey,
+        'token': APIToken
+    }
+
+    for findSelection in items:
+        if findSelection['id'] == int(Selected_item):
+            shortLink=findSelection['shortLink']
+            url = "https://api.trello.com/1/cards/" + shortLink
+            response = requests.request("PUT",url,params=query)
+            break
 
     return None
