@@ -10,18 +10,18 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
+      <ul class="list-group mb-2">
         <form action="/itemaction" method="POST">
         <!-- List the todo items here -->
           <uL>
             {% for item in items %}
-            <div class="mb-0">
-              <input type="radio" id="{{ item.id }}" name="To Do List" value="{{ item.id }} - {{ item.status }} - {{ item.title }}">  
+            <div class="mb-1">
+              <input type="radio" id="{{ item.id }}" name="To Do List" value="{{ item.id }}">  
               <label for="{{ item.id }}">{{ item.id }} - {{ item.status }} - {{ item.title }}</label>
             </div>
             {% endfor %}
           </uL>
-          <div class="mb-2">
+          <div class="mb-1">
             <div class="col-md-5">
               <label for="new_item">Take Action :</label>
           <input type="submit" value="Started" name="Action 1">
