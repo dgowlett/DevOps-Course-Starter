@@ -1,4 +1,4 @@
-from flask import session
+#from flask import session
 import requests
 import json
 
@@ -19,32 +19,61 @@ def get_items(BOARD_ID,APIKey,APIToken):
     """
     query = {
         'key': APIKey,
-        'token': APIToken
+        'token': APIToken,
+        'cards': 'open'
     }
 
     print(query)
-    url = "https://api.trello.com/1/boards/" + BOARD_ID + "/cards"
+    #url = "https://api.trello.com/1/boards/" + BOARD_ID + "/cards"
+    url = "https://api.trello.com/1/boards/" + BOARD_ID + "/lists"
     print(url)
     response = requests.request("GET",url,params=query)
 
     jsonResponse = response.json()
     items=[]
-    #get lists To-do, doing, done
+    
+    # add try abort response errors i.e. server code 500
+    #
 
     print(jsonResponse)
-    for dataline in jsonResponse:
-        print(dataline['id'])
-        print(dataline['name'])
-        print(dataline['shortLink'])
-        getitem = {'id': dataline['id'], 'title': dataline['name'], 'status': dataline['shortLink']}
-        items.append(getitem)
-        #for key, value in dataline.items():
-        #    if key == 'name':
-        #        print(key, ":", value)
-        #    elif key == 'id':
-        #        print(key, ":", value)
 
-    print(items)
-    #return session.get('items', _DEFAULT_ITEMS.copy())
+    id_number=1
+    for lists in jsonResponse:
+        print(lists['id'])
+        print(lists['name'])
+        for card in lists['cards']:
+            print(card['name'])
+            if lists['name'] == 'Doing':
+                status="Started"
+            else:
+                status="Not Started"
+
+            getitem = {'id': id_number, 'title': card['name'], 'status': status}
+            items.append(getitem)
+            id_number += 1
+
     return items
-    #return next((item for item in dataline.items() if item['name'] == 'name', None)
+
+
+def add_item(title):
+    """
+    Adds a new item with the specified title to the session.
+
+    Args:
+        title: The title of the item.
+
+    Returns:
+        item: The saved item.
+    """
+    items = get_items(app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+
+    # Determine the ID for the item based on that of the previously added item
+    id = items[-1]['id'] + 1 if items else 0
+
+    item = { 'id': id, 'title': title, 'status': 'Not Started' }
+
+    # Add the item to the list
+    items.append(item)
+    #################session['items'] = items
+
+    return item
