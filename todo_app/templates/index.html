@@ -11,13 +11,15 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-2">
-        <form action="/itemaction" method="POST">
+        <form action="/" method="GET">
         <!-- List the todo items here -->
           <uL>
             {% for item in items %}
             <div class="mb-1">
-              <input type="radio" id="{{ item.id }}" name="To Do List" value="{{ item.id }}">  
-              <label for="{{ item.id }}">{{ item.id }} - {{ item.status }} - {{ item.title }}</label>
+              <input type="button" value="Completed"  onclick="window.location.href='{{ url_for('completed', id=item.id) }}'"> 
+              <input type="button" value="Not Started" onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
+              <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id) }}'">
+              &emsp; {{ item.id }} - {{ item.status }} - {{ item.title }} 
             </div>
             {% endfor %}
           </uL>

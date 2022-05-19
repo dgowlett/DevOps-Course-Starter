@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 
 from todo_app.flask_config import Config
 from todo_app.data.trello_items import get_items, add_item, delete_item, completed_item, not_started_item
@@ -17,19 +17,37 @@ def addnewtodo():
     newtodo= request.form.get('new_item')
     if newtodo != '':
         add_item(newtodo,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-        print (app.config["BOARD_ID"])
     return redirect('/')
 
-# NEW
-@app.route('/completeditem', methods=['POST'])
-def completedtodo():
-    newtodo= request.form.get('completeditem')
+@app.route('/cards/<int:id>/completed', methods=['GET','POST'])
+def completed(id):
+    newtodo= request.form.get('completed_item')
     if newtodo != '':
-        Selected_item = request.form['To Do List']
-        completed_item(Selected_item,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-        print (app.config["BOARD_ID"])
+        completed_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+
     return redirect('/')
+
+@app.route('/cards/<int:id>/not_started', methods=['GET','POST'])
+def not_started(id):
+    newtodo= request.form.get('completed_item')
+    if newtodo != '':
+        not_started_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])   
+    
+    return redirect('/')
+
+
+@app.route('/cards/<int:id>/delete', methods=['GET','POST'])
+def delete(id):
+    newtodo= request.form.get('completed_item')
+    if newtodo != '':
+        delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+    return redirect('/')
+
+
 # END OF NEW
+
+
+
 
 @app.route('/itemaction', methods=['POST'])
 def actiontodo():
