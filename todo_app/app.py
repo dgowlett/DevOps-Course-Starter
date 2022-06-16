@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, url_for
 
 from todo_app.flask_config import Config
 from todo_app.data.trello_items import get_items, add_item, delete_item, completed_item, not_started_item
+from todo_app.data.Item_class import Item
 
 app = Flask(__name__)
 app.config.from_object(Config())
