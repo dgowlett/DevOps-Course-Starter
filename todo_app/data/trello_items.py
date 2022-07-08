@@ -2,6 +2,7 @@
 #
 import requests
 import json
+from todo_app.data.Item_class import Item
 
 _DEFAULT_ITEMS = [
     { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
@@ -44,13 +45,22 @@ def get_items(BOARD_ID,APIKey,APIToken):
                 status="Completed"
             else:
                 status="Not Started"
-            getitem = {'id': id_number, 'title': card['name'], 'status': status, 'shortLink': card['shortLink'], 'idList': card['idList']}
-            items.append(getitem)
+            getitem =   {'id': id_number, 
+                         'title': card['name'],
+                         'status': status,
+                         'shortLink': card['shortLink'],
+                         'idList': card['idList']}
+            print("id: ",card['id'])
+            new_items = Item.from_trello_card(card,lists)
+
+            #print(Item(card,list))
+            print(new_items.id,new_items.name,new_items.status)
+            # OLD items.append(getitem)
+            newitem = {'id': id_number, 'title': new_items.name, 'status': new_items.status, 'shortLink': card['shortLink'],'idList': card['idList']}
+            items.append(newitem)
             id_number += 1
 
     return items
-
-
 
 
 def add_item(title,BOARD_ID,APIKey,APIToken):
