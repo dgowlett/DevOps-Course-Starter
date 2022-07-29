@@ -41,27 +41,12 @@ def get_items(BOARD_ID,APIKey,APIToken):
     for lists in jsonResponse: 
         lists_ids.append({'id': lists['id'], 'name': lists['name']})
         for card in lists['cards']:
-            if lists['name'] == 'Done':
-                status="Completed"
-            else:
-                status="Not Started"
-            getitem =   {'id': id_number, 
-                         'title': card['name'],
-                         'status': status,
-                         'shortLink': card['shortLink'],
-                         'idList': card['idList']}
-            print("id: ",card['id'])
             new_items = Item.from_trello_card(card,lists)
-
-            #print(Item(card,list))
-            print(new_items.id,new_items.name,new_items.status)
-            # OLD items.append(getitem)
-            newitem = {'id': id_number, 'title': new_items.name, 'status': new_items.status, 'shortLink': card['shortLink'],'idList': card['idList']}
+            newitem = {'id': id_number, 'title': new_items.name, 'status': new_items.status, 'shortLink': new_items.shortLink, 'idList': new_items.idList}
             items.append(newitem)
             id_number += 1
 
     return items
-
 
 def add_item(title,BOARD_ID,APIKey,APIToken):
     """
