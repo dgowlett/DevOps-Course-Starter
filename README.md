@@ -7,6 +7,8 @@
 The project uses poetry for Python to create an isolated environment and manage package dependencies. This project uses the official distribution of Python version 3.7+ the installation instrution below however will install these for you
 (as found in the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
+The project uses docker container technology to stand up a development and production environments, therefore you will need to install docker desktop first for your host OS [docker installion](https://docs.docker.com/engine/install) ; note docker desktop for windows may require a paid subscription to use, please check the latest documentation - as of today 2nd August 2022 it is okay to use subscription free for educational purposes.
+
 ## Dependencies
 
 This App uses the Trello site to store the Card and list information that the App uses, therefore the following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate, these will be requested when installing the App in the next section
@@ -15,27 +17,59 @@ TRELLO_API_KEY
 TRELLO_API_TOKEN
 TRELLO_BOARD_ID
 
+First make a copy of the .env.template file to the .env file and then fill in the TRELLO environment variables obtained when you created you trello account 
+
 ## Installing and running the App
 
-Note: These instructions below require that the user id is ec2-user is used
+## Building and running the DEVELOPMENT docker container
 
-This App uses Ansible to install and run the App using a Control Node and Managed Node (aka the Host that runs the App)
-It is required that the Control Node has ssh with no password required access to the Managed Node by creating a ssh key
-pair using ssh-keygen command on the Control Node and this will generate the required key pair under the .ssh directory.  You will then need to copy the public key over from the Control Node to the Managed Node and using something like 'ssh-copy-id ec2-user@<ip address of then Managed Node> which will acheive this and you will be prompted for the password on last time.
+First build the docker image for development
 
-From the Control node run 'ansible --version' to make sure that ansible is installed and available, if not install ansible using 'pip install ansible'
+docker build --target development --tag todo-app:dev .
 
-Copy the following files to the Control Node
+To run the Development todo flask dev container Following on windows (the path) port 80 locally and mounts the host source code directory/folder in the container so that when
+changes are made to the source code the flask picks up those changes
 
-inventory
-playbook.yml
-.env.j2
+docker run --env-file ./.env -p 5100:5100 -d --mount type=bind,source="${pwd}"\todo_app,target=/app/todo_app --name todo-app_dev todo-app:dev
 
-Change the IP address/s (Managed Node IP) under the ManagedNodes group in the inventory file if required
-Change the IP address/s (Managed Node IP) in the Hosts setting in the playbook.yml file if required
+Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
 
-Now run ansible from the Control Node to setup and run the App, you will be prompted first for the Trello authentication and Board id details
+## Controlling the development container
 
-$ ansible-playbook playbook.yml -i inventory
+To Stop the development container.
 
-After a sucessful installtion you can now open up a browser and navagate to the <Managed Node IP>:5000/ to acess the App
+docker stop todo-app_dev
+
+To Start the development container again.
+
+docker start todo-app_dev
+
+To remove the development container i.e. If you wish to perform a docker run again using the same ports/name etc
+
+docker rm todo-app_dev
+
+## Building and running the PRODUCTION docker container 
+
+First build the production docker image
+
+docker build --target production --tag todo-app:prod .
+
+To run the Production todo-app gunicorn container Following on windows (the path)
+
+docker run --env-file ./.env -p 80:5000 -d --name todo-app_prod todo-app:prod
+
+Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
+
+## Controlling the production container
+
+To Stop the production container.
+
+docker stop todo-app_prod
+
+To Start the production container again.
+
+docker start todo-app_prod
+
+To remove the production container i.e. If you wish to perform a docker run again using the same ports/name etc
+
+docker rm todo-app_prod
