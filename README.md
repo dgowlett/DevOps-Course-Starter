@@ -4,57 +4,38 @@
 
 ## System Requirements
 
-The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install Poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
-
-### Poetry installation (Bash)
-
-```bash
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
-```
-
-### Poetry installation (PowerShell)
-
-```powershell
-(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -UseBasicParsing).Content | python -
-```
+The project uses poetry for Python to create an isolated environment and manage package dependencies. This project uses the official distribution of Python version 3.7+ the installation instrution below however will install these for you
+(as found in the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
 ## Dependencies
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
+This App uses the Trello site to store the Card and list information that the App uses, therefore the following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate, these will be requested when installing the App in the next section
 
-```bash
-$ poetry install
-```
+TRELLO_API_KEY
+TRELLO_API_TOKEN
+TRELLO_BOARD_ID
 
-You'll also need to clone a new `.env` file from the `.env.template` to store local configuration options. This is a one-time operation on first setup:
+## Installing and running the App
 
-```bash
-$ cp .env.template .env  # (first time only)
-```
+Note: These instructions below require that the user id is ec2-user is used
 
-The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change).
+This App uses Ansible to install and run the App using a Control Node and Managed Node (aka the Host that runs the App)
+It is required that the Control Node has ssh with no password required access to the Managed Node by creating a ssh key
+pair using ssh-keygen command on the Control Node and this will generate the required key pair under the .ssh directory.  You will then need to copy the public key over from the Control Node to the Managed Node and using something like 'ssh-copy-id ec2-user@<ip address of then Managed Node> which will acheive this and you will be prompted for the password on last time.
 
-The following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate
+From the Control node run 'ansible --version' to make sure that ansible is installed and available, if not install ansible using 'pip install ansible'
 
-TRELLO_API_KEY=your_trello_api_key
-TRELLO_API_TOKEN=your_trello_api_token
-TRELLO_BOARD_ID=your_trello_board_id
+Copy the following files to the Control Node
 
-## Running the App
+inventory
+playbook.yml
+.env.j2
 
-Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
-```bash
-$ poetry run flask run
-```
+Change the IP address/s (Managed Node IP) under the ManagedNodes group in the inventory file if required
+Change the IP address/s (Managed Node IP) in the Hosts setting in the playbook.yml file if required
 
-You should see output similar to the following:
-```bash
- * Serving Flask app "app" (lazy loading)
- * Environment: development
- * Debug mode: on
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- * Restarting with fsevents reloader
- * Debugger is active!
- * Debugger PIN: 226-556-590
-```
-Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+Now run ansible from the Control Node to setup and run the App, you will be prompted first for the Trello authentication and Board id details
+
+$ ansible-playbook playbook.yml -i inventory
+
+After a sucessful installtion you can now open up a browser and navagate to the <Managed Node IP>:5000/ to acess the App
