@@ -4,57 +4,72 @@
 
 ## System Requirements
 
-The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install Poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
+The project uses poetry for Python to create an isolated environment and manage package dependencies. This project uses the official distribution of Python version 3.7+ the installation instrution below however will install these for you
+(as found in the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
-### Poetry installation (Bash)
-
-```bash
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
-```
-
-### Poetry installation (PowerShell)
-
-```powershell
-(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -UseBasicParsing).Content | python -
-```
+The project uses docker container technology to stand up a development and production environments, therefore you will need to install docker desktop first for your host OS [docker installion](https://docs.docker.com/engine/install) ; note docker desktop for windows may require a paid subscription to use, please check the latest documentation - as of today 2nd August 2022 it is okay to use subscription free for educational purposes.
 
 ## Dependencies
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
+This App uses the Trello site to store the Card and list information that the App uses, therefore the following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate, these will be requested when installing the App in the next section
 
-```bash
-$ poetry install
-```
+TRELLO_API_KEY
+TRELLO_API_TOKEN
+TRELLO_BOARD_ID
 
-You'll also need to clone a new `.env` file from the `.env.template` to store local configuration options. This is a one-time operation on first setup:
+First make a copy of the .env.template file to the .env file and then fill in the TRELLO environment variables obtained when you created you trello account 
 
-```bash
-$ cp .env.template .env  # (first time only)
-```
+## Installing and running the App
 
-The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change).
+## Building and running the DEVELOPMENT docker container
 
-The following variables will need to be provided after creating a trello account from https://trello.com and creation of a new Board followed by generation of a required api key and token from https://trello.com/1/appKey/generate
+First build the docker image for development
 
-TRELLO_API_KEY=your_trello_api_key
-TRELLO_API_TOKEN=your_trello_api_token
-TRELLO_BOARD_ID=your_trello_board_id
+docker build --target development --tag todo-app:dev .
 
-## Running the App
+To run the Development todo flask dev container Following on windows (the path) port 80 locally and mounts the host source code directory/folder in the container so that when
+changes are made to the source code the flask picks up those changes
 
-Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
-```bash
-$ poetry run flask run
-```
+docker run --env-file ./.env -p 5100:5100 -d --mount type=bind,source="${pwd}"\todo_app,target=/app/todo_app --name todo-app_dev todo-app:dev
 
-You should see output similar to the following:
-```bash
- * Serving Flask app "app" (lazy loading)
- * Environment: development
- * Debug mode: on
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- * Restarting with fsevents reloader
- * Debugger is active!
- * Debugger PIN: 226-556-590
-```
-Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
+
+## Controlling the development container
+
+To Stop the development container.
+
+docker stop todo-app_dev
+
+To Start the development container again.
+
+docker start todo-app_dev
+
+To remove the development container i.e. If you wish to perform a docker run again using the same ports/name etc
+
+docker rm todo-app_dev
+
+## Building and running the PRODUCTION docker container 
+
+First build the production docker image
+
+docker build --target production --tag todo-app:prod .
+
+To run the Production todo-app gunicorn container Following on windows (the path)
+
+docker run --env-file ./.env -p 80:5000 -d --name todo-app_prod todo-app:prod
+
+Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
+
+## Controlling the production container
+
+To Stop the production container.
+
+docker stop todo-app_prod
+
+To Start the production container again.
+
+docker start todo-app_prod
+
+To remove the production container i.e. If you wish to perform a docker run again using the same ports/name etc
+
+docker rm todo-app_prod

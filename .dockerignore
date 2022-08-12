@@ -1,0 +1,11 @@
+.env*
+.git*
+.venv*
+.vscode
+.docker*
+README.md
+Dockerfile
+inventory
+playbook.yml
+todoapp.service
+run_app.sh
