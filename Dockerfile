@@ -1,11 +1,11 @@
 FROM python:buster as base
+RUN apt-get update && apt-get install -y curl
+RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
 
 # For Production
 
 FROM base as production
 
-RUN apt-get update && apt-get install -y curl
-RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
 RUN mkdir -p /app/todo_app
 COPY poetry* /app
 COPY pyproject.toml /app
@@ -21,8 +21,6 @@ EXPOSE 5000/tcp
 
 FROM base as development
 
-RUN apt-get update && apt-get install -y curl 
-RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
 RUN mkdir /app
 COPY poetry* /app
 COPY pyproject.toml /app
