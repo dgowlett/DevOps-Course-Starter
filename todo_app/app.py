@@ -15,34 +15,35 @@ def create_app():
         items = get_items(app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
         return render_template('index.html', items=items)
     
-    @app.route('/additem', methods=['POST'])
+    @app.route('/additem', methods=['GET','POST'])
     def addnewtodo():
         newtodo= request.form.get('new_item')
         if newtodo != '':
             add_item(newtodo,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-        return redirect('/')
+            return redirect('/')
 
-    @app.route('/cards/<int:id>/completed', methods=['GET','POST'])
+    @app.route('/cards/<id>/completed', methods=['GET','POST'])
     def completed(id):
-        newtodo= request.form.get('completed_item')
-        if newtodo != '':
-            completed_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+        #newtodo= request.form.get('completed_item')
+        #if newtodo != '':
+        completed_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
 
         return redirect('/')
 
-    @app.route('/cards/<int:id>/not_started', methods=['GET','POST'])
+    @app.route('/cards/<id>/not_started', methods=['GET','POST'])
     def not_started(id):
-        newtodo= request.form.get('completed_item')
-        if newtodo != '':
-            not_started_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])   
+        #newtodo= request.form.get('completed_item')
+        #if newtodo != '':
+        not_started_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])   
     
         return redirect('/')
 
-    @app.route('/cards/<int:id>/delete', methods=['GET','POST'])
+    @app.route('/cards/<id>/delete', methods=['GET','POST'])
     def delete(id):
-        newtodo= request.form.get('completed_item')
-        if newtodo != '':
-            delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+        #newtodo= request.form.get('completed_item')
+        #if newtodo != '':
+        #    print("id equels ",id)
+        delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
         return redirect('/')
 
     return app
