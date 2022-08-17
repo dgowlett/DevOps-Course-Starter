@@ -5,7 +5,6 @@ import json
 from todo_app.data.Item_class import Item
 
 lists_ids=[]
-#items=[]
 
 def get_items(BOARD_ID,APIKey,APIToken):
     """
