@@ -19,7 +19,7 @@
               <input type="button" value="Completed"  onclick="window.location.href='{{ url_for('completed', id=item.id) }}'">
               <input type="button" value="Not Started" onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
               <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id) }}'">
-              &emsp; {{ item.id }} - {{ item.status }} - {{ item.title }}
+              &emsp; {{ loop.index0 + 1 }} - {{ item.status }} - {{ item.title }}
             </div> 
             {% endfor %}
           </uL>
