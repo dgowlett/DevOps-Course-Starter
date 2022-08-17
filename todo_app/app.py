@@ -46,4 +46,5 @@ def create_app():
         delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
         return redirect('/')
 
+    redirect('/')
     return app
