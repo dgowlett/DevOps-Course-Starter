@@ -58,7 +58,7 @@ To run the Production todo-app gunicorn container Following on windows (the path
 
 docker run --env-file ./.env -p 80:5000 -d --name todo-app_prod todo-app:prod
 
-Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
+Now you should be able to navigate using a browser to http://127.0.0.1 or the public IP address
 
 ## Controlling the production container
 
