@@ -4,13 +4,8 @@ import requests
 import json
 from todo_app.data.Item_class import Item
 
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
-
-lists_ids=[]
-items=[]
+#lists_ids=[]
+#items=[]
 
 def get_items(BOARD_ID,APIKey,APIToken):
     """

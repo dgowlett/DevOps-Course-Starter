@@ -45,20 +45,4 @@ def create_app():
             delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
         return redirect('/')
 
-# END OF NEW
-
-    @app.route('/itemaction', methods=['POST'])
-    def actiontodo():
-
-        if 'To Do List' in request.form:
-            Selected_item = request.form['To Do List']
-            if request.form.get('Action 1') == 'Not Started':
-                not_started_item(Selected_item,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])            
-            elif request.form.get('Action 2') == 'Completed':
-                completed_item(Selected_item,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-            elif request.form.get('Action 3') == 'delete':
-                delete_item(Selected_item,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-
-        return redirect('/')
-
     return app
