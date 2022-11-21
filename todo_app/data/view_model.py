@@ -10,8 +10,18 @@ class ViewModel:
         
     @property
     def todo_items(self) -> list[Item]:
-        return []
+        todo=[]
+        for entires in self._items: 
+            if entires.status == "To Do":
+                todo.append(entires)
+        # status is Todo
+        return todo
 
     @property
     def done_items(self) -> list[Item]:
-        return []
+        done=[]
+        for entires in self._items: 
+            if entires.status == "Done":
+                done.append(entires)
+        # status is completed 
+        return done
