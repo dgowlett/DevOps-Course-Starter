@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, render_template, url_for
 
 from todo_app.flask_config import Config
 from todo_app.data.trello_items import get_items, add_item, delete_item, completed_item, not_started_item
-
+from todo_app.data.view_model import ViewModel
 
 def create_app():
 
@@ -13,7 +13,10 @@ def create_app():
     @app.route('/')
     def index():
         items = get_items(app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-        return render_template('index.html', items=items)
+        view_model = ViewModel(items)
+        return render_template('index.html', view_model = view_model)
+
+        
     
     @app.route('/additem', methods=['GET','POST'])
     def addnewtodo():
