@@ -16,6 +16,8 @@ def create_app():
         view_model = ViewModel(items)
         return render_template('index.html', view_model = view_model)
 
+        #return render_template('index.html', items = items)
+
         
     
     @app.route('/additem', methods=['GET','POST'])
