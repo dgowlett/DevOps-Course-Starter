@@ -9,14 +9,28 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <h2>Todo Items</h2>
       <ul class="list-group mb-2">
         <form action="/" method="GET">
         <!-- List the todo items here -->
           <uL>
-            {% for item in items %}
+            {% for item in view_model.items %}
             <div class="mb-1">
               <input type="button" value="Completed"  onclick="window.location.href='{{ url_for('completed', id=item.id) }}'">
+              <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id) }}'">
+              &emsp; {{ item.id }} - {{ item.status }} - {{ item.title }}
+            </div> 
+            {% endfor %}
+          </uL>
+        </form>
+      </ul>
+      <h2>Done Items</h2>
+      <ul class="list-group mb-2">
+        <form action="/" method="GET">
+        <!-- List the todo items here -->
+          <uL>
+            {% for item in view_model.done_items %}
+            <div class="mb-1">
               <input type="button" value="Not Started" onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
               <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id) }}'">
               &emsp; {{ item.id }} - {{ item.status }} - {{ item.title }}
