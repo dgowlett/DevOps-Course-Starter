@@ -19,6 +19,31 @@ TRELLO_BOARD_ID
 
 First make a copy of the .env.template file to the .env file and then fill in the TRELLO environment variables obtained when you created you trello account 
 
+## Development
+
+If any changes are made to the code base, then the following can be used to run tests which can be found and defined in the files under the test directory.
+
+## Unit tests
+
+The individual tests can be performed in the following way
+
+pytest --setup-only
+
+Followed by the individual tests picked out from running pytest --setup-only above
+
+pytest test/test_view_model.py::test_done_items_property_only_returns_the_done_items
+
+pytest test/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
+
+Run all the tests
+
+pytest
+
+or
+
+pytest test/test_view_model.py
+
+
 ## Installing and running the App
 
 ## Building and running the DEVELOPMENT docker container
