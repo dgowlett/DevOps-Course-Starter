@@ -27,11 +27,15 @@ After any changes, care must be taken to ensure that poetry / flask works as exp
 
 > poetry run flask run
 
-## Unit tests
+## To run all Unit and Intergration Tests run the following
+
+poetry run pytest
+
+## Unit tests only
 
 The individual tests can be performed in the following way
 
-poetry run pytest --setup-only test/test_view_model.py
+poetry run pytest --setup-only
 
 Followed by the individual tests picked out from running pytest --setup-only above
 
@@ -41,17 +45,14 @@ poetry run pytest test/test_view_model.py::test_todo_items_property_only_returns
 
 Run all the Unit tests
 
-pytest test/test_view_model.py
+poetry run pytest test/test_view_model.py
 
-## Intergration tests
+## Intergration tests only
 
 To run the Intergration tests run the following:
 
-poetry run pytest todo_app\test_client.py
+poetry run pytest test\test_client.py
 
-## To run all Unit and Intergration Tests run the following
-
-poetry run pytest
 
 
 
