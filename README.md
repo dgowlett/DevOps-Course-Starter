@@ -23,6 +23,8 @@ First make a copy of the .env.template file to the .env file and then fill in th
 
 If any changes are made to the code base, then the following can be used to run tests which can be found and defined in the files under the test directory.
 
+poetry run flask run
+
 ## Unit tests
 
 The individual tests can be performed in the following way
