@@ -18,7 +18,7 @@ def test_done_items_property_only_returns_the_done_items():
     assert done_item.status == "Done"
 
 def test_todo_items_property_only_returns_the_todo_items():
-    # Arrange
+    # Arrange 2
     items = [
         Item('0','0','test1','/test1','Done'), # Done Item 
         Item('1','1','test2','/test2','To Do')  # Todo Item 
