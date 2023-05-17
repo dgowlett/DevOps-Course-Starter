@@ -118,3 +118,8 @@ env/
 
 ### Configuration files ###
 .env
+.docker_trello_env
+
+### Test files ###
+
+todo_app/templates/index copy.html
