@@ -3,7 +3,7 @@
 import os
 import requests
 import json
-from todo_app.data.Item_class import Item
+from todo_app.data.item import Item
 
 lists_ids=[]
 
