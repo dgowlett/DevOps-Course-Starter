@@ -1,12 +1,14 @@
 # Trello card actions
 #
+import os
 import requests
 import json
 from todo_app.data.Item_class import Item
 
 lists_ids=[]
 
-def get_items(BOARD_ID,APIKey,APIToken):
+#def get_items(BOARD_ID,APIKey,APIToken):
+def get_items():
     """
     Fetches all saved items from trello board_id.
 
@@ -16,6 +18,14 @@ def get_items(BOARD_ID,APIKey,APIToken):
     Returns:
         list: The list of cards from a list/board.
     """
+
+    global BOARD_ID
+    global APIKey
+    global APIToken    
+
+    BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    APIKey   = os.environ.get('TRELLO_API_KEY')
+    APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     items=[]
     query = {
@@ -39,7 +49,8 @@ def get_items(BOARD_ID,APIKey,APIToken):
 
     return items
 
-def add_item(title,BOARD_ID,APIKey,APIToken):
+#def add_item(title,BOARD_ID,APIKey,APIToken):
+def add_item(title):
     """
     Adds a new item with the specified title to the session.
 
@@ -49,6 +60,10 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     Returns:
         item: The saved item.
     """
+
+    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    #APIKey   = os.environ.get('TRELLO_API_KEY')
+    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     for list_id in lists_ids:
         if list_id['name'] == 'To Do':
@@ -73,8 +88,8 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
 
 
 
-
-def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
+#def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
+def delete_item(Selected_item):
     """
     delete card using it's Selected_item, BOARD_ID, APIKey, APIToken.
 
@@ -84,6 +99,10 @@ def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
     Returns:
         Nothing.
     """
+
+    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    #APIKey   = os.environ.get('TRELLO_API_KEY')
+    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     query = {   
         'key': APIKey,
@@ -95,8 +114,8 @@ def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
 
     return None
 
-
-def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
+#def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
+def completed_item(Selected_item):
     """
     completed card using it's shortLink and Done lists idList.
 
@@ -106,6 +125,10 @@ def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
     Returns:
         Nothing.
     """
+
+    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    #APIKey   = os.environ.get('TRELLO_API_KEY')
+    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'Done':
@@ -122,7 +145,8 @@ def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
 
     return None
 
-def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
+#def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
+def not_started_item(Selected_item):
     """
     switch card to not started status using it's shortLink and Done lists idList.
 
@@ -132,6 +156,10 @@ def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
     Returns:
         Nothing.
     """
+
+    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    #APIKey   = os.environ.get('TRELLO_API_KEY')
+    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'To Do':

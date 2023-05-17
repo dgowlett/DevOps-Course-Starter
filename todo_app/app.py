@@ -9,46 +9,32 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
 
-
     @app.route('/')
     def index():
-        items = get_items(app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+        items = get_items()
         view_model = ViewModel(items)
-        return render_template('index.html', view_model = view_model)
-
-        #return render_template('index.html', items = items)
-
-        
+        return render_template('index.html', view_model = view_model)        
     
-    @app.route('/additem', methods=['GET','POST'])
+    @app.route('/additem', methods=['POST'])
     def addnewtodo():
         newtodo= request.form.get('new_item')
         if newtodo != '':
-            add_item(newtodo,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+            add_item(newtodo)
             return redirect('/')
 
-    @app.route('/cards/<id>/completed', methods=['GET','POST'])
+    @app.route('/cards/<id>/completed')
     def completed(id):
-        #newtodo= request.form.get('completed_item')
-        #if newtodo != '':
-        completed_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
-
+        completed_item(id)
         return redirect('/')
 
-    @app.route('/cards/<id>/not_started', methods=['GET','POST'])
-    def not_started(id):
-        #newtodo= request.form.get('completed_item')
-        #if newtodo != '':
-        not_started_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])   
-    
+    @app.route('/cards/<id>/not_started')
+    def not_started(id):  
+        not_started_item(id)   
         return redirect('/')
 
-    @app.route('/cards/<id>/delete', methods=['GET','POST'])
+    @app.route('/cards/<id>/delete')
     def delete(id):
-        #newtodo= request.form.get('completed_item')
-        #if newtodo != '':
-        #    print("id equels ",id)
-        delete_item(id,app.config["BOARD_ID"],app.config["API_KEY"],app.config["API_TOKEN"])
+        delete_item(id)
         return redirect('/')
 
     redirect('/')
