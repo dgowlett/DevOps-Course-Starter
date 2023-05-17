@@ -61,10 +61,6 @@ def add_item(title):
         item: The saved item.
     """
 
-    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
-    #APIKey   = os.environ.get('TRELLO_API_KEY')
-    #APIToken = os.environ.get('TRELLO_API_TOKEN')
-
     for list_id in lists_ids:
         if list_id['name'] == 'To Do':
             created_in_list=list_id['id']
@@ -100,10 +96,6 @@ def delete_item(Selected_item):
         Nothing.
     """
 
-    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
-    #APIKey   = os.environ.get('TRELLO_API_KEY')
-    #APIToken = os.environ.get('TRELLO_API_TOKEN')
-
     query = {   
         'key': APIKey,
         'token': APIToken
@@ -125,10 +117,6 @@ def completed_item(Selected_item):
     Returns:
         Nothing.
     """
-
-    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
-    #APIKey   = os.environ.get('TRELLO_API_KEY')
-    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'Done':
@@ -156,10 +144,6 @@ def not_started_item(Selected_item):
     Returns:
         Nothing.
     """
-
-    #BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
-    #APIKey   = os.environ.get('TRELLO_API_KEY')
-    #APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'To Do':
