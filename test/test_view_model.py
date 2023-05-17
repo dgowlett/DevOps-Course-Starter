@@ -1,5 +1,5 @@
 from todo_app.data.view_model import ViewModel
-from todo_app.data.Item_class import Item
+from todo_app.data.item import Item
 
 def test_done_items_property_only_returns_the_done_items():
     # Arrange
