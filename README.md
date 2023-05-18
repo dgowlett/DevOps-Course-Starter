@@ -19,6 +19,43 @@ TRELLO_BOARD_ID
 
 First make a copy of the .env.template file to the .env file and then fill in the TRELLO environment variables obtained when you created you trello account 
 
+## Development
+
+If any changes are made to the code base, then the following can be used to run tests which can be found and defined in the files under the test directory.
+
+After any changes, care must be taken to ensure that poetry / flask works as expected run from a terminal.
+
+> poetry run flask run
+
+## To run all Unit and Intergration Tests run the following
+
+poetry run pytest
+
+## Unit tests only
+
+The individual tests can be performed in the following way
+
+poetry run pytest --setup-only
+
+Followed by the individual tests picked out from running pytest --setup-only above
+
+poetry run pytest test/test_view_model.py::test_done_items_property_only_returns_the_done_items
+
+poetry run pytest test/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
+
+Run all the Unit tests
+
+poetry run pytest test/test_view_model.py
+
+## Intergration tests only
+
+To run the Intergration tests run the following:
+
+poetry run pytest test\test_client.py
+
+
+
+
 ## Installing and running the App
 
 ## Building and running the DEVELOPMENT docker container
@@ -58,7 +95,7 @@ To run the Production todo-app gunicorn container Following on windows (the path
 
 docker run --env-file ./.env -p 80:5000 -d --name todo-app_prod todo-app:prod
 
-Now you can not only navigate using a browser to http://127.0.0.1 , you can also make changes to the source code and they will be refelected by flasks reloading of the application files with in the running development docker container
+Now you should be able to navigate using a browser to http://127.0.0.1 or the public IP address
 
 ## Controlling the production container
 

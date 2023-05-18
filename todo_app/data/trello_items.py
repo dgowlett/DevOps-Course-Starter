@@ -1,18 +1,13 @@
 # Trello card actions
 #
+import os
 import requests
 import json
-from todo_app.data.Item_class import Item
-
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
+from todo_app.data.item import Item
 
 lists_ids=[]
-items=[]
 
-def get_items(BOARD_ID,APIKey,APIToken):
+def get_items():
     """
     Fetches all saved items from trello board_id.
 
@@ -22,6 +17,14 @@ def get_items(BOARD_ID,APIKey,APIToken):
     Returns:
         list: The list of cards from a list/board.
     """
+
+    global BOARD_ID
+    global APIKey
+    global APIToken    
+
+    BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
+    APIKey   = os.environ.get('TRELLO_API_KEY')
+    APIToken = os.environ.get('TRELLO_API_TOKEN')
 
     items=[]
     query = {
@@ -37,18 +40,15 @@ def get_items(BOARD_ID,APIKey,APIToken):
     # add try abort response errors i.e. server code 500
     #
 
-    id_number=1
     for lists in jsonResponse: 
         lists_ids.append({'id': lists['id'], 'name': lists['name']})
         for card in lists['cards']:
-            new_items = Item.from_trello_card(card,lists)
-            newitem = {'id': id_number, 'title': new_items.name, 'status': new_items.status, 'shortLink': new_items.shortLink, 'idList': new_items.idList}
+            newitem = Item.from_trello_card(card,lists)
             items.append(newitem)
-            id_number += 1
 
     return items
 
-def add_item(title,BOARD_ID,APIKey,APIToken):
+def add_item(title):
     """
     Adds a new item with the specified title to the session.
 
@@ -58,15 +58,6 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     Returns:
         item: The saved item.
     """
-    items = get_items(BOARD_ID,APIKey,APIToken)
-
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
-
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
-
-    # Add the item to the list
-    items.append(item)
 
     for list_id in lists_ids:
         if list_id['name'] == 'To Do':
@@ -87,9 +78,11 @@ def add_item(title,BOARD_ID,APIKey,APIToken):
     url = "https://api.trello.com/1/cards"
     response = requests.request("POST",url,headers=headers,params=query)
 
-    return item
+    return None
 
-def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
+
+
+def delete_item(Selected_item):
     """
     delete card using it's Selected_item, BOARD_ID, APIKey, APIToken.
 
@@ -100,23 +93,18 @@ def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
         Nothing.
     """
 
-    items = get_items(BOARD_ID,APIKey,APIToken)
     query = {   
         'key': APIKey,
         'token': APIToken
     }
 
-    for findSelection in items:
-        if findSelection['id'] == int(Selected_item):
-            shortLink=findSelection['shortLink']
-            url = "https://api.trello.com/1/cards/" + shortLink
-            response = requests.request("DELETE",url,params=query)
-            break
+    url = "https://api.trello.com/1/cards/" + Selected_item
+    response = requests.request("DELETE",url,params=query)
 
     return None
 
-
-def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
+#def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
+def completed_item(Selected_item):
     """
     completed card using it's shortLink and Done lists idList.
 
@@ -126,8 +114,6 @@ def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
     Returns:
         Nothing.
     """
-
-    items = get_items(BOARD_ID,APIKey,APIToken)
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'Done':
@@ -139,16 +125,12 @@ def completed_item(Selected_item,BOARD_ID,APIKey,APIToken):
         'token': APIToken
     }
 
-    for findSelection in items:
-        if findSelection['id'] == int(Selected_item):
-            shortLink=findSelection['shortLink']
-            url = "https://api.trello.com/1/cards/" + shortLink
-            response = requests.request("PUT",url,params=query)
-            break
+    url = "https://api.trello.com/1/cards/" + Selected_item
+    response = requests.request("PUT",url,params=query)
 
     return None
 
-def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
+def not_started_item(Selected_item):
     """
     switch card to not started status using it's shortLink and Done lists idList.
 
@@ -158,8 +140,6 @@ def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
     Returns:
         Nothing.
     """
-
-    items = get_items(BOARD_ID,APIKey,APIToken)
 
     for Done_idList in lists_ids:
         if Done_idList['name'] == 'To Do':
@@ -171,11 +151,7 @@ def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
         'token': APIToken
     }
 
-    for findSelection in items:
-        if findSelection['id'] == int(Selected_item):
-            shortLink=findSelection['shortLink']
-            url = "https://api.trello.com/1/cards/" + shortLink
-            response = requests.request("PUT",url,params=query)
-            break
+    url = "https://api.trello.com/1/cards/" + Selected_item
+    response = requests.request("PUT",url,params=query)
 
     return None

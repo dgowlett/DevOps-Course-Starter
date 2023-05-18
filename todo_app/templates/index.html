@@ -13,16 +13,24 @@
       <ul class="list-group mb-2">
         <form action="/" method="GET">
         <!-- List the todo items here -->
-          <uL>
-            {% for item in items %}
+          <ul>
+            {% for item in view_model.todo_items %}
             <div class="mb-1">
               <input type="button" value="Completed"  onclick="window.location.href='{{ url_for('completed', id=item.id) }}'">
-              <input type="button" value="Not Started" onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
-              <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id) }}'">
-              &emsp; {{ item.id }} - {{ item.status }} - {{ item.title }}
+              <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id ) }}'">
+              &emsp; {{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}
             </div> 
             {% endfor %}
-          </uL>
+
+
+            {% for item in view_model.done_items %}
+            <div class="mb-1">
+              <input type="button" value="Not Started" onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
+              <input type="button" value="delete" onclick="window.location.href='{{ url_for('delete', id=item.id ) }}'">
+              &emsp; {{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}
+            </div> 
+            {% endfor %}
+          </ul>
         </form>
       </ul>
     </div>

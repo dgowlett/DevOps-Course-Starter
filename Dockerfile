@@ -1,16 +1,15 @@
 FROM python:buster as base
+RUN apt-get update && apt-get install -y curl
+RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
 
 # For Production
 
 FROM base as production
 
-RUN apt-get update && apt-get install -y curl
-RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
-RUN mkdir -p /app/todo_app
-COPY poetry* /app
-COPY pyproject.toml /app
-COPY todo_app /app/todo_app
-WORKDIR /app
+WORKDIR /app # creates the directory for us if missing
+COPY poetry* .
+COPY pyproject.toml .
+COPY todo_app ./todo_app
 RUN ~/.local/bin/poetry install
 ENV poetry=/root/.local/bin
 ENV PATH=${poetry}:${PATH}
@@ -21,12 +20,10 @@ EXPOSE 5000/tcp
 
 FROM base as development
 
-RUN apt-get update && apt-get install -y curl 
-RUN curl -sSL https://install.python-poetry.org | /usr/bin/python3 -
-RUN mkdir /app
-COPY poetry* /app
-COPY pyproject.toml /app
-WORKDIR /app
+WORKDIR /app # creates the directory for us if missing
+COPY poetry* .
+COPY pyproject.toml .
+COPY todo_app ./todo_app
 RUN ~/.local/bin/poetry install
 ENV poetry=/root/.local/bin
 ENV PATH=${poetry}:${PATH}
