@@ -7,7 +7,6 @@ from todo_app.data.item import Item
 
 lists_ids=[]
 
-#def get_items(BOARD_ID,APIKey,APIToken):
 def get_items():
     """
     Fetches all saved items from trello board_id.
@@ -49,7 +48,6 @@ def get_items():
 
     return items
 
-#def add_item(title,BOARD_ID,APIKey,APIToken):
 def add_item(title):
     """
     Adds a new item with the specified title to the session.
@@ -84,7 +82,6 @@ def add_item(title):
 
 
 
-#def delete_item(Selected_item,BOARD_ID,APIKey,APIToken):
 def delete_item(Selected_item):
     """
     delete card using it's Selected_item, BOARD_ID, APIKey, APIToken.
@@ -133,7 +130,6 @@ def completed_item(Selected_item):
 
     return None
 
-#def not_started_item(Selected_item,BOARD_ID,APIKey,APIToken):
 def not_started_item(Selected_item):
     """
     switch card to not started status using it's shortLink and Done lists idList.

@@ -17,17 +17,6 @@ def client():
     with test_app.test_client() as client:
         yield client
 
-def test_index_page(client):
-
-    response = client.get('/')
-
-def test_index_page(monkeypatch, client):
-    # This replaces any call to requests.get with our own function
-    monkeypatch.setattr(requests, 'get', stub)
-#    monkeypatch.setattr(requests, 'request', stub)
-
-    response = client.get('/')
-
 class StubResponse():
     def __init__(self, fake_response_data):
         self.fake_response_data = fake_response_data
