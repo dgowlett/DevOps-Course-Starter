@@ -21,7 +21,7 @@ First make a copy of the .env.template file to the .env file and then fill in th
 
 ## Development
 
-If any changes are made to the code base, then the following can be used to run tests which can be found and defined in the files under the test directory.
+If any changes are made to the code base, then the following can be used to run tests which can be found and defined in the files under the tests directory.
 
 After any changes, care must be taken to ensure that poetry / flask works as expected run from a terminal.
 
@@ -39,19 +39,19 @@ poetry run pytest --setup-only
 
 Followed by the individual tests picked out from running pytest --setup-only above
 
-poetry run pytest test/test_view_model.py::test_done_items_property_only_returns_the_done_items
+poetry run pytest tests/test_view_model.py::test_done_items_property_only_returns_the_done_items
 
-poetry run pytest test/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
+poetry run pytest tests/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
 
 Run all the Unit tests
 
-poetry run pytest test/test_view_model.py
+poetry run pytest tests/test_view_model.py
 
 ## Intergration tests only
 
 To run the Intergration tests run the following:
 
-poetry run pytest test\test_client.py
+poetry run pytest tests\test_client.py
 
 
 
