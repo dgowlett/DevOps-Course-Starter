@@ -4,8 +4,8 @@ RUN apt-get update && apt-get install -y curl
 RUN which python3
 RUN curl -sSL https://install.python-poetry.org | /usr/local/bin/python3 -
 WORKDIR /app 
-COPY poetry* .
-COPY pyproject.toml .
+COPY poetry* /app/
+COPY pyproject.toml /app
 COPY todo_app ./todo_app
 RUN ~/.local/bin/poetry install
 ENV poetry=/root/.local/bin
