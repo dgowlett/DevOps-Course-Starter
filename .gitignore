@@ -127,3 +127,6 @@ todo_app/data/item.py.old
 documentation/.$4c_ToDo_App_Component.png.bkp
 documentation/.$4c_ToDo_App_Container.png.bkp
 documentation/.$4c_ToDo_App_Context.png.bkp
+
+### Geckodriver.log
+geckodriver.log
