@@ -241,7 +241,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pytest"
-version = "7.3.2"
+version = "7.4.0"
 description = "pytest: simple powerful testing with Python"
 category = "main"
 optional = false
@@ -422,7 +422,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "30a958163da092feb4ac1eebba6cd10002a460ec0c8bf15ebf4e4b56b2d70693"
+content-hash = "76618e988caa393e0d3ab235ce2c4059cc865b1fa73bb2a91cb31a254e4c29f8"
 
 [metadata.files]
 async-generator = []

@@ -1,20 +1,27 @@
 import os
 import pytest
+
+#from importlib import reload
+import importlib
 import requests
+importlib.reload(requests)
+
 import json
 from threading import Thread
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from todo_app import app
 
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
     # Load our real environment variables
-    load_dotenv(override=True)
+    #file_path = find_dotenv('.env')
+    file_path = find_dotenv('.env')
+    load_dotenv(file_path,override=True)
+    #load_dotenv(override=True)
 
     # Create the new board & update the board id environment variable
     board_id = create_trello_board()
@@ -49,7 +56,7 @@ def create_trello_board():
     url = "https://api.trello.com/1/boards/?name=e2eTesting"
     response = requests.request("POST",url,params=query)
     jsonResponse = response.json()
-
+    print("board id " + jsonResponse["shortUrl"].split("/")[4])
     return jsonResponse["shortUrl"].split("/")[4]
 
 def delete_trello_board(board_id):
@@ -80,18 +87,20 @@ def test_task_journey(driver, app_with_temp_board):
     test_text = "Happy Testing"
     todo_text_field = driver.find_element(By.NAME, 'new_item')
     todo_text_field.send_keys(test_text)
-    sleep(3)
+
+    
+    sleep(1)
 
     driver.find_element(By.NAME, "submit").click()
-    sleep(1)
+    sleep(2)
 
     test_text = "Happy Testing2"
     todo_text_field = driver.find_element(By.NAME, 'new_item')
     todo_text_field.send_keys(test_text)
-    sleep(1)
+    sleep(2)
 
     driver.find_element(By.NAME, "submit").click()
-    sleep(4)
+    sleep(2)
 
 def test_task_journey_complete(driver, app_with_temp_board):
     driver.get('http://localhost:5000/')

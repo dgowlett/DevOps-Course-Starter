@@ -29,31 +29,35 @@ After any changes, care must be taken to ensure that poetry / flask works as exp
 
 ## To run all Unit and Intergration Tests run the following
 
-poetry run pytest
+poetry run pytest tests
 
 ## Unit tests only
 
 The individual tests can be performed in the following way
 
-poetry run pytest --setup-only
+poetry run pytest --setup-only todo_app/tests
 
 Followed by the individual tests picked out from running pytest --setup-only above
 
-poetry run pytest tests/test_view_model.py::test_done_items_property_only_returns_the_done_items
+poetry run pytest todo_app/tests/test_view_model.py::test_done_items_property_only_returns_the_done_items
 
-poetry run pytest tests/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
+poetry run pytest todo_app/tests/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
 
 Run all the Unit tests
 
-poetry run pytest tests/test_view_model.py
+poetry run pytest todo_app/tests/test_view_model.py
 
 ## Intergration tests only
 
 To run the Intergration tests run the following:
 
-poetry run pytest tests\test_client.py
+poetry run pytest todo_app/tests/test_client.py
 
+## To run End 2 End tests
 
+To run the end to end test run the following
+
+poetry run pytest todo_app/tests_e2e/test_client_e2e.py
 
 
 ## Installing and running the App

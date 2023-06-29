@@ -11,8 +11,13 @@ on:
 jobs: 
   build: 
     name: Build and test 
+    env:
+      TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+      TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+
     runs-on: ubuntu-latest 
     steps: 
     - uses: actions/checkout@v2 
     - run: docker build --target test --tag my-test-image .
     - run: docker run my-test-image todo_app/tests
+    - run: docker run -e TRELLO_API_KEY="$TRELLO_KEY" -e TRELLO_API_TOKEN="$TRELLO_TOKEN" my-test-image todo_app/tests_e2e
