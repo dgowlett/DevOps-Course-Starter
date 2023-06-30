@@ -76,7 +76,7 @@ def test_task_journey(driver, app_with_temp_board):
 
     print(dir(driver))
     assert driver.title == 'To-Do App'
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(2)
 
     test_text = "Happy Testing"
     todo_text_field = driver.find_element(By.NAME, 'new_item')
@@ -86,15 +86,21 @@ def test_task_journey(driver, app_with_temp_board):
     sleep(1)
 
     driver.find_element(By.NAME, "submit").click()
-    sleep(2)
+    sleep(1)
+
+    assert driver.find_element(By.ID, 'todo_text_0').text == "1 - To Do - " + test_text
+
+    sleep(1)
 
     test_text = "Happy Testing2"
     todo_text_field = driver.find_element(By.NAME, 'new_item')
     todo_text_field.send_keys(test_text)
-    sleep(2)
+    sleep(1)
 
     driver.find_element(By.NAME, "submit").click()
-    sleep(2)
+    sleep(1)
+
+    assert driver.find_element(By.ID, 'todo_text_1').text == "2 - To Do - " + test_text
 
 def test_task_journey_complete(driver, app_with_temp_board):
     driver.get('http://localhost:5000/')
@@ -106,11 +112,18 @@ def test_task_journey_complete(driver, app_with_temp_board):
     driver.find_element(By.NAME, "todo_0").click()
     sleep(1)
 
+    test_text = "Happy Testing"
+    assert driver.find_element(By.ID, 'done_text_0').text == "1 - Done - " + test_text
+
     driver.implicitly_wait(5)
     
     # Click on Not started button to complete
     driver.find_element(By.NAME, "todo_0").click()
     sleep(1)
+
+    test_text = "Happy Testing2"
+    assert driver.find_element(By.ID, 'done_text_1').text == "2 - Done - " + test_text
+
 
 def test_task_journey_notstarted(driver, app_with_temp_board):
     driver.get('http://localhost:5000/')
@@ -122,6 +135,10 @@ def test_task_journey_notstarted(driver, app_with_temp_board):
     driver.find_element(By.NAME, "done_0").click()
     sleep(1)
 
+    test_text = "Happy Testing"
+    assert driver.find_element(By.ID, 'todo_text_0').text == "1 - To Do - " + test_text
+
+
 def test_task_journey_delete(driver, app_with_temp_board):
     driver.get('http://localhost:5000/')
 
@@ -132,8 +149,15 @@ def test_task_journey_delete(driver, app_with_temp_board):
     driver.find_element(By.NAME, "todo_delete_0").click()
     sleep(1)
 
+    #test_text = "Happy Testing"
+    #test = driver.find_element(By.ID, 'todo_text_0')
+    #assert test == '' 
+
     # Delete Todo item found in Completed
     driver.find_element(By.NAME, "done_delete_0").click()
     sleep(1)
+
+    #test_text = "Happy Testing2"
+    #assert driver.find_element(By.ID, 'done_text_0').text != "1 - Done - " + test_text 
 
 

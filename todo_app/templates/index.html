@@ -18,7 +18,8 @@
             <div class="mb-1">
               <input type="button" value="Completed" name="todo_{{loop.index0}}" onclick="window.location.href='{{ url_for('completed', id=item.id) }}'">
               <input type="button" value="delete" name="todo_delete_{{loop.index0}}" onclick="window.location.href='{{ url_for('delete', id=item.id ) }}'">
-              &emsp; {{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}
+              &emsp; 
+              <span id="todo_text_{{loop.index0}}">{{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}</span>
             </div> 
             {% endfor %}
 
@@ -27,7 +28,8 @@
             <div class="mb-1">
               <input type="button" value="Not Started" name="done_{{loop.index0}}" + loop.index0 onclick="window.location.href='{{ url_for('not_started', id=item.id) }}'">
               <input type="button" value="delete" name="done_delete_{{loop.index0}}" onclick="window.location.href='{{ url_for('delete', id=item.id ) }}'">
-              &emsp; {{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}
+              &emsp; 
+              <span id="done_text_{{loop.index0}}">{{ loop.index0 + 1 }} - {{ item.status }} - {{ item.name }}</span>
             </div> 
             {% endfor %}
           </ul>

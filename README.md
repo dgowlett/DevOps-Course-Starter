@@ -120,4 +120,14 @@ docker rm todo-app_prod
 
 
 
-export MOZ_HEADLESS=1
+MOZ_HEADLESS=1
+
+poetry run pytest --cov-report term --cov=todo_app todo_app/tests
+
+poetry run pytest --cov-report term --cov=todo_app todo_app/tests_e2e
+
+
+
+poetry run pytest --cov-report term-missing --cov=todo_app todo_app/tests
+
+poetry run pytest --cov-report term-missing --cov=todo_app todo_app/tests_e2e
