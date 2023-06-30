@@ -30,5 +30,5 @@ FROM base as test
 COPY .env.test .
 RUN apt-get install -y --no-install-recommends firefox-esr
 ENV MOZ_HEADLESS=1
-#ENTRYPOINT ["poetry", "run", "pytest"]
+ENTRYPOINT ["poetry", "run", "pytest"]
 EXPOSE 5100/tcp
