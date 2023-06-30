@@ -11,6 +11,7 @@ RUN ~/.local/bin/poetry install
 ENV poetry=/root/.local/bin
 ENV PATH=${poetry}:${PATH}
 
+
 # For Production
 
 FROM base as production
@@ -27,5 +28,7 @@ EXPOSE 5100/tcp
 
 FROM base as test
 COPY .env.test .
-ENTRYPOINT ["poetry", "run", "pytest"]
+RUN apt-get install -y --no-install-recommends firefox-esr
+ENV MOZ_HEADLESS=1
+#ENTRYPOINT ["poetry", "run", "pytest"]
 EXPOSE 5100/tcp

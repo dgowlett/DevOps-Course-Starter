@@ -11,9 +11,12 @@ from threading import Thread
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+#from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from dotenv import load_dotenv, find_dotenv
 from todo_app import app
 
+#options = FirefoxOptions()
+#options.add_argument('-headless')
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
@@ -74,6 +77,8 @@ def delete_trello_board(board_id):
 
 @pytest.fixture(scope="module")
 def driver():
+    #options = FirefoxOptions()
+    #options.add_argument('-headless')
     with webdriver.Firefox() as driver:
         yield driver
 

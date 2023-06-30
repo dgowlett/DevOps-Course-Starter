@@ -114,3 +114,10 @@ docker start todo-app_prod
 To remove the production container i.e. If you wish to perform a docker run again using the same ports/name etc
 
 docker rm todo-app_prod
+
+
+
+
+
+
+export MOZ_HEADLESS=1
