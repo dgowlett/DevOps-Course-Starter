@@ -1,30 +1,21 @@
 import os
 import pytest
-
-#from importlib import reload
-import importlib
 import requests
-importlib.reload(requests)
-
 import json
 from threading import Thread
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-#from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from dotenv import load_dotenv, find_dotenv
 from todo_app import app
-
-#options = FirefoxOptions()
-#options.add_argument('-headless')
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
     # Load our real environment variables
     #file_path = find_dotenv('.env')
     file_path = find_dotenv('.env')
-    load_dotenv(file_path,override=True)
-    #load_dotenv(override=True)
+    #load_dotenv(file_path,override=True)
+    load_dotenv(override=True)
 
     # Create the new board & update the board id environment variable
     board_id = create_trello_board()
@@ -77,8 +68,6 @@ def delete_trello_board(board_id):
 
 @pytest.fixture(scope="module")
 def driver():
-    #options = FirefoxOptions()
-    #options.add_argument('-headless')
     with webdriver.Firefox() as driver:
         yield driver
 
