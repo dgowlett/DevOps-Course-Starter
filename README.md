@@ -115,19 +115,3 @@ To remove the production container i.e. If you wish to perform a docker run agai
 
 docker rm todo-app_prod
 
-
-
-
-
-
-MOZ_HEADLESS=1
-
-poetry run pytest --cov-report term --cov=todo_app todo_app/tests
-
-poetry run pytest --cov-report term --cov=todo_app todo_app/tests_e2e
-
-
-
-poetry run pytest --cov-report term-missing --cov=todo_app todo_app/tests
-
-poetry run pytest --cov-report term-missing --cov=todo_app todo_app/tests_e2e
