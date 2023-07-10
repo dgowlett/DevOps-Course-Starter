@@ -29,32 +29,53 @@ After any changes, care must be taken to ensure that poetry / flask works as exp
 
 ## To run all Unit and Intergration Tests run the following
 
-poetry run pytest
+poetry run pytest tests
 
 ## Unit tests only
 
 The individual tests can be performed in the following way
 
-poetry run pytest --setup-only
+poetry run pytest --setup-only todo_app/tests
 
 Followed by the individual tests picked out from running pytest --setup-only above
 
-poetry run pytest tests/test_view_model.py::test_done_items_property_only_returns_the_done_items
+poetry run pytest todo_app/tests/test_view_model.py::test_done_items_property_only_returns_the_done_items
 
-poetry run pytest tests/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
+poetry run pytest todo_app/tests/test_view_model.py::test_todo_items_property_only_returns_the_todo_items
 
 Run all the Unit tests
 
-poetry run pytest tests/test_view_model.py
+poetry run pytest todo_app/tests/test_view_model.py
 
 ## Intergration tests only
 
 To run the Intergration tests run the following:
 
-poetry run pytest tests\test_client.py
+poetry run pytest todo_app/tests/test_client.py
+
+## To run End 2 End tests
+
+To run the end to end test run the following
+
+poetry run pytest todo_app/tests_e2e/test_client_e2e.py
 
 
+## To run the all Unit and Intergration Tests under Docker
 
+docker build --target test --tag my-test-image .
+
+docker run my-test-image todo_app/tests
+
+## To run the End 2 End tests under Docker
+
+This will require the live TRELLO API KEY and TOKEN but note that this test will create a new temporary board to perform the End to End Tests.
+
+Using the TRELLO Variable set in the .env file set and pass the env valiable to docker, example for the bash shell:
+
+export TRELLO_KEY=lkjh66dfgohe66rgoheorgh
+export TRELLO_TOKEN=ijhu999gtfreyeyikd8888jdjsdpsfjpwffwevjffejd1
+
+docker run -e TRELLO_API_KEY="$TRELLO_KEY" -e TRELLO_API_TOKEN="$TRELLO_TOKEN" my-test-image todo_app/tests_e2e
 
 ## Installing and running the App
 
@@ -110,3 +131,5 @@ docker start todo-app_prod
 To remove the production container i.e. If you wish to perform a docker run again using the same ports/name etc
 
 docker rm todo-app_prod
+
+

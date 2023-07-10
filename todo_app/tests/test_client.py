@@ -40,6 +40,7 @@ def stub(cmd,url, params={}):
 def test_index_page(monkeypatch, client):
    # Replace requests.get(url) with our own function
    #monkeypatch.setattr(requests, 'get', stub)
+   #_original_function = requests.request
    monkeypatch.setattr(requests, 'request', stub)
 
    # Make a request to our app's index page
