@@ -60,6 +60,23 @@ To run the end to end test run the following
 poetry run pytest todo_app/tests_e2e/test_client_e2e.py
 
 
+## To run the all Unit and Intergration Tests under Docker
+
+docker build --target test --tag my-test-image .
+
+docker run my-test-image todo_app/tests
+
+## To run the End 2 End tests under Docker
+
+This will require the live TRELLO API KEY and TOKEN but note that this test will create a new temporary board to perform the End to End Tests.
+
+Using the TRELLO Variable set in the .env file set and pass the env valiable to docker, example for the bash shell:
+
+export TRELLO_KEY=lkjh66dfgohe66rgoheorgh
+export TRELLO_TOKEN=ijhu999gtfreyeyikd8888jdjsdpsfjpwffwevjffejd1
+
+docker run -e TRELLO_API_KEY="$TRELLO_KEY" -e TRELLO_API_TOKEN="$TRELLO_TOKEN" my-test-image todo_app/tests_e2e
+
 ## Installing and running the App
 
 ## Building and running the DEVELOPMENT docker container
