@@ -70,7 +70,7 @@ docker run my-test-image todo_app/tests
 
 This will require the live TRELLO API KEY and TOKEN but note that this test will create a new temporary board to perform the End to End Tests.
 
-Using the TRELLO Variable set in the .env file set and pass the env valiable to docker, example for the bash shell:
+Using the TRELLO Variable set in the .env file set and pass the env variable to docker, example for the bash shell:
 
 export TRELLO_KEY=lkjh66dfgohe66rgoheorgh
 export TRELLO_TOKEN=ijhu999gtfreyeyikd8888jdjsdpsfjpwffwevjffejd1
@@ -116,6 +116,8 @@ To run the Production todo-app gunicorn container Following on windows (the path
 
 docker run --env-file ./.env -p 80:5000 -d --name todo-app_prod todo-app:prod
 
+#docker run --env-file ./.env -d --name todo-app_prod todo-app:prod
+
 Now you should be able to navigate using a browser to http://127.0.0.1 or the public IP address
 
 ## Controlling the production container
@@ -132,4 +134,60 @@ To remove the production container i.e. If you wish to perform a docker run agai
 
 docker rm todo-app_prod
 
+## Pushing production container image to docker hub and publishing as a production application in MS azure
 
+First: Create or use and existing user id on docker hub
+
+docker login
+
+or if using podman
+
+podman login docker.io
+
+Now build the container image
+
+docker build --target production --tag <your docker hub user id>/my-todo-app:prod .
+
+docker push <your docker hub user id>/my-todo-app:prod
+
+Now create a application in MS azure - this is the cli example which expects that you have az install on your system
+
+az login
+
+Now create your app service plan under a appropriote resource group
+
+az appservice plan create --resource-group <Your resource group> -n <Your new service plan name> --sku B1 --is-linux
+
+az webapp create --resource-group <Your resource group> --plan <Your new service plan name> --name <Your docker hub user id>mytodoapp --deployment-container-image-name docker.io/<your docker hub user id>/my-todo-app:prod
+
+az webapp config appsettings set -g <Your resource group> -n <Your docker hub user id> --settings FLASK_APP=todo_app/app
+az webapp config appsettings set -g <Your resource group> -n <Your docker hub user id> --settings WEBSITES_PORT=5000
+
+Now add the following appropriote TRELLO env Variables in Azure under settings -> Configuration -> Application Settings
+
+TRELLO_API_KEY
+TRELLO_API_TOKEN
+TRELLO_BOARD_ID
+
+Example cli
+
+az webapp config appsettings set -g <Your resource group> -n <Your docker hub user id>mytodoapp --settings TRELLO_API_KEY=<api>
+
+or using the Azure url
+
+
+Check the live url http://<Your docker hub user id>mytodoapp.azurewebsites.net
+
+If the site gives errors or doesn't perform properly then check azure deployment logs and application logs
+
+## To force a restart of the app in Azure and pull the latest version of the container image from docker hub 
+
+In Azure use your webhook URL associated with your app which can be located under the Deployment center and post to it 
+
+make sure you put a \ before the $
+
+curl -dH -X POST "<Your webhook with the modified $ to \$>>
+
+Like the following 
+
+curl -dH -X POST "https://\$<deployment_username>:<deployment_password>@<webapp_name>.scm.azurewebsites.net/docker/hook"
