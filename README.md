@@ -150,6 +150,11 @@ docker build --target production --tag <your docker hub user id>/my-todo-app:pro
 
 docker push <your docker hub user id>/my-todo-app:prod
 
+Example:
+
+https://hub.docker.com/repository/docker/dgowlett/my-todo-app
+
+
 Now create a application in MS azure - this is the cli example which expects that you have az install on your system
 
 az login
