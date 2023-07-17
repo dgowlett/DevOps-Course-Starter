@@ -33,7 +33,7 @@ jobs:
       - run: echo "Publishing"
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - run: pwd
-      - run: cd
+      - run: cd ..
       - run: pwd
       - run: ls -la
       - run: docker build --target production --tag $DOCKER_USER/my-todo-app:prod .
