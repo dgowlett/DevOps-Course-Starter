@@ -9,16 +9,16 @@ on:
       - main
 
 jobs: 
-  build: 
-    name: Build and test 
-    env:
-      TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
-      TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+#  build: 
+#    name: Build and test 
+#    env:
+#      TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+#      TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
 
-    runs-on: ubuntu-latest 
-    steps: 
-    - uses: actions/checkout@v2 
-    - run: docker build --target test --tag my-test-image .
+#    runs-on: ubuntu-latest 
+#    steps: 
+#    - uses: actions/checkout@v2 
+#    - run: docker build --target test --tag my-test-image .
 #    - run: docker run my-test-image todo_app/tests
 #    - run: docker run -e TRELLO_API_KEY="$TRELLO_KEY" -e TRELLO_API_TOKEN="$TRELLO_TOKEN" my-test-image todo_app/tests_e2e
   
@@ -27,13 +27,12 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-      needs: build
+#      needs: build
       runs-on: ubuntu-latest
       steps:
+      - uses: actions/checkout@v2 
       - run: echo "Publishing"
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - run: pwd
-      - run: cd ..
       - run: pwd
       - run: ls -la
       - run: docker build --target production --tag $DOCKER_USER/my-todo-app:prod .
