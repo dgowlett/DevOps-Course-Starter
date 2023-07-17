@@ -26,13 +26,13 @@ jobs:
       name: Build and push
       env:
         DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+        DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       needs: build
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2 
       - run: echo "Publishing"
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
       - run: docker build --target production --tag $DOCKER_USER/my-todo-app:prod .
       - run: docker push $DOCKER_USER/my-todo-app:prod
       - run: docker logout
